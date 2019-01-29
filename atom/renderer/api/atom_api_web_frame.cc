@@ -316,8 +316,15 @@ void WebFrame::InsertText(const std::string& text) {
       blink::WebVector<blink::WebImeTextSpan>(), blink::WebRange(), 0);
 }
 
-void WebFrame::InsertCSS(const std::string& css) {
-  web_frame_->GetDocument().InsertStyleSheet(blink::WebString::FromUTF8(css));
+base::string16 WebFrame::InsertCSS(const base::string16& css) {
+  return web_frame_->GetDocument()
+      .InsertStyleSheet(blink::WebString::FromUTF16(css))
+      .Utf16();
+}
+
+void WebFrame::RemoveInsertedCSS(const base::string16& key) {
+  web_frame_->GetDocument().RemoveInsertedStyleSheet(
+      blink::WebString::FromUTF16(key));
 }
 
 void WebFrame::ExecuteJavaScript(const base::string16& code,
@@ -528,6 +535,7 @@ void WebFrame::BuildPrototype(v8::Isolate* isolate,
                  &WebFrame::RegisterURLSchemeAsPrivileged)
       .SetMethod("insertText", &WebFrame::InsertText)
       .SetMethod("insertCSS", &WebFrame::InsertCSS)
+      .SetMethod("removeInsertedCSS", &WebFrame::RemoveInsertedCSS)
       .SetMethod("executeJavaScript", &WebFrame::ExecuteJavaScript)
       .SetMethod("executeJavaScriptInIsolatedWorld",
                  &WebFrame::ExecuteJavaScriptInIsolatedWorld)

@@ -8,6 +8,7 @@
 #include "atom/common/native_mate_converters/callback.h"
 #include "atom/common/native_mate_converters/file_path_converter.h"
 #include "atom/common/native_mate_converters/value_converter.h"
+#include "atom/common/promise_util.h"
 #include "base/bind.h"
 #include "base/files/file_util.h"
 #include "content/public/browser/tracing_controller.h"
@@ -84,10 +85,28 @@ bool StartTracing(const base::trace_event::TraceConfig& trace_config,
       trace_config, base::BindOnce(callback));
 }
 
-bool GetTraceBufferUsage(
-    const base::RepeatingCallback<void(float, size_t)>& callback) {
-  return TracingController::GetInstance()->GetTraceBufferUsage(
-      base::BindOnce(callback));
+void OnTraceBufferUsageAvailable(v8::Isolate* isolate,
+                                 scoped_refptr<atom::util::Promise> promise,
+                                 float percent_full,
+                                 size_t approximate_count) {
+  mate::Dictionary dict = mate::Dictionary::CreateEmpty(isolate);
+  dict.Set("percentage", percent_full);
+  dict.Set("value", approximate_count);
+
+  promise->Resolve(dict.GetHandle());
+}
+
+v8::Local<v8::Promise> GetTraceBufferUsage(v8::Isolate* isolate) {
+  scoped_refptr<atom::util::Promise> promise = new atom::util::Promise(isolate);
+  bool success = TracingController::GetInstance()->GetTraceBufferUsage(
+      base::BindOnce(&OnTraceBufferUsageAvailable, isolate, promise));
+
+  if (!success) {
+    promise->RejectWithErrorMessage("Could not get trace buffer usage.");
+    return promise->GetHandle();
+  }
+
+  return promise->GetHandle();
 }
 
 void Initialize(v8::Local<v8::Object> exports,

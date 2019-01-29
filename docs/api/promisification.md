@@ -17,7 +17,6 @@ When a majority of affected functions are migrated, this flag will be enabled by
 - [contentTracing.startMonitoring(options, callback)](https://github.com/electron/electron/blob/master/docs/api/content-tracing.md#startMonitoring)
 - [contentTracing.stopMonitoring(callback)](https://github.com/electron/electron/blob/master/docs/api/content-tracing.md#stopMonitoring)
 - [contentTracing.captureMonitoringSnapshot(resultFilePath, callback)](https://github.com/electron/electron/blob/master/docs/api/content-tracing.md#captureMonitoringSnapshot)
-- [contentTracing.getTraceBufferUsage(callback)](https://github.com/electron/electron/blob/master/docs/api/content-tracing.md#getTraceBufferUsage)
 - [debugger.sendCommand(method[, commandParams, callback])](https://github.com/electron/electron/blob/master/docs/api/debugger.md#sendCommand)
 - [dialog.showOpenDialog([browserWindow, ]options[, callback])](https://github.com/electron/electron/blob/master/docs/api/dialog.md#showOpenDialog)
 - [dialog.showSaveDialog([browserWindow, ]options[, callback])](https://github.com/electron/electron/blob/master/docs/api/dialog.md#showSaveDialog)
@@ -48,6 +47,7 @@ When a majority of affected functions are migrated, this flag will be enabled by
 
 - [app.getFileIcon(path[, options], callback)](https://github.com/electron/electron/blob/master/docs/api/app.md#getFileIcon)
 - [contents.capturePage([rect, ]callback)](https://github.com/electron/electron/blob/master/docs/api/web-contents.md#capturePage)
+- [contentTracing.getTraceBufferUsage(callback)](https://github.com/electron/electron/blob/master/docs/api/content-tracing.md#getTraceBufferUsage)
 - [cookies.flushStore(callback)](https://github.com/electron/electron/blob/master/docs/api/cookies.md#flushStore)
 - [cookies.get(filter, callback)](https://github.com/electron/electron/blob/master/docs/api/cookies.md#get)
 - [cookies.remove(url, name, callback)](https://github.com/electron/electron/blob/master/docs/api/cookies.md#remove)
